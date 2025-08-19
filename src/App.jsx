@@ -16,7 +16,21 @@ function App() {
     const stored = localStorage.getItem("favorites");
     return stored ? JSON.parse(stored) : [];
   });
+// Add this inside your component
+const setAllDifficulties = (newDifficulty) => {
+  setDifficulties(Array(10).fill(newDifficulty));
+};
 
+  // helper to calculate master difficulty value
+const getMasterDifficulty = () => {
+  const first = difficulties[0];
+  if (difficulties.every((d) => d === first)) {
+    return first; // all same
+  }
+  return "mixed"; // different values
+};
+
+  
   const regenerate = () => {
     const seen = new Set(phases.filter((_, i) => locked[i]));
 
@@ -60,63 +74,88 @@ function App() {
     });
   };
 
-  return (
-    <Router>
-      <div className="app-container">
-        <nav className="nav-bar">
-          <Link to="/" className="nav-link">Generator</Link>
-          <Link to="/favorites" className="nav-link">Favorites</Link>
-        </nav>
+return (
+  <Router>
+    <div className="app-container">
+      <nav className="nav-bar">
+        <Link to="/" className="nav-link">Generator</Link>
+        <Link to="/favorites" className="nav-link">Favorites</Link>
+      </nav>
 
-        <h1 className="app-title">Custom Phase 10 Generator</h1>
+      <h1 className="app-title">Custom Phase 10 Generator</h1>
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="phases-list">
-                {phases.map((phase, i) => (
-                  <div key={i} className="phase-card" style={{ "--phase-index": i }}>
-                    <div className="phase-card-content">
-                      <label className="phase-label">
-                        <input
-                          type="checkbox"
-                          checked={locked[i]}
-                          onChange={() => toggleLock(i)}
-                        />
-                        <span className="phase-name"> Phase {i + 1}: {phase}</span>
-                      </label>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="phases-list">
 
-                      <select
-                        className="phase-dropdown"
-                        value={difficulties[i]}
-                        onChange={(e) => changeDifficulty(i, e.target.value)}
-                      >
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                      </select>
-
-                      <button
-                        className={`favorite-btn ${favorites.includes(phase) ? "active" : ""}`}
-                        onClick={() => toggleFavorite(phase)}
-                      >
-                        {favorites.includes(phase) ? "★ Favorited" : "☆ Favorite"}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                <button className="regenerate-btn" onClick={regenerate}>
-                  🎲 Regenerate
-                </button>
+              {/* Master dropdown */}
+              <div className="master-dropdown">
+                <label>Set all difficulties: </label>
+                <select
+                  value={
+                    difficulties.every(d => d === difficulties[0])
+                      ? difficulties[0]  // all same → show that
+                      : "mixed"           // otherwise → mixed
+                  }
+                  onChange={(e) => {
+                    if (e.target.value !== "mixed") {
+                      setDifficulties(Array(10).fill(e.target.value));
+                    }
+                  }}
+                >
+                  <option value="mixed" disabled>Mixed</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
               </div>
-            }
-          />
-          <Route path="/favorites" element={<FavoritesList />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+
+              {/* Individual dropdowns */}
+              {phases.map((phase, i) => (
+                <div key={i} className="phase-card" style={{ "--phase-index": i }}>
+                  <div className="phase-card-content">
+                    <label className="phase-label">
+                      <input
+                        type="checkbox"
+                        checked={locked[i]}
+                        onChange={() => toggleLock(i)}
+                      />
+                      <span className="phase-name"> Phase {i + 1}: {phase}</span>
+                    </label>
+
+                    <select
+                      className="phase-dropdown"
+                      value={difficulties[i]}
+                      onChange={(e) => changeDifficulty(i, e.target.value)}
+                    >
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                    </select>
+
+                    <button
+                      className={`favorite-btn ${favorites.includes(phase) ? "active" : ""}`}
+                      onClick={() => toggleFavorite(phase)}
+                    >
+                      {favorites.includes(phase) ? "★ Favorited" : "☆ Favorite"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              <button className="regenerate-btn" onClick={regenerate}>
+                🎲 Regenerate
+              </button>
+            </div>
+          }
+        />
+        <Route path="/favorites" element={<FavoritesList />} />
+      </Routes>
+    </div>
+  </Router>
+);
 }
 
 export default App;
