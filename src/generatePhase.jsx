@@ -38,11 +38,12 @@ function generatePhase(phaseNumber, difficulty = "easy", attempts = 0) {
 
   const total = requirements.reduce((s, r) => s + r.num, 0);
 
-  if (total >= 9) {
-    if (attempts > 10) return "⚠️ Could not generate valid phase";
-    return generatePhase(phaseNumber, difficulty, attempts + 1); // pass difficulty here!
+  // Only retry if attempts <= 10 and total is too high
+  if (total >= 9 && attempts <= 10) {
+    return generatePhase(phaseNumber, difficulty, attempts + 1);
   }
 
+  // Otherwise, just return whatever we got
   return requirements.map(r => {
     if (r.type === "set") return `Set of ${r.num}`;
     if (r.type === "run") return `Run of ${r.num}`;
