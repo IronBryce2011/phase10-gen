@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import generatePhase from "./generatePhase";
 import FavoritesList from "./favoritesList"; // make sure you have this component
+import "./App.css"; // import your CSS file
 
 function App() {
   const defaultDifficulties = Array(10).fill("easy");
@@ -61,45 +62,53 @@ function App() {
 
   return (
     <Router>
-      <div>
-        <nav style={{ marginBottom: "1rem" }}>
-          <Link to="/" style={{ marginRight: "1rem" }}>Generator</Link>
-          <Link to="/favorites">Favorites</Link>
+      <div className="app-container">
+        <nav className="nav-bar">
+          <Link to="/" className="nav-link">Generator</Link>
+          <Link to="/favorites" className="nav-link">Favorites</Link>
         </nav>
-  <h1>Custom Phase 10 Generator</h1>
+
+        <h1 className="app-title">Custom Phase 10 Generator</h1>
+
         <Routes>
           <Route
             path="/"
             element={
-              <div>
+              <div className="phases-list">
                 {phases.map((phase, i) => (
-                  <div key={i} style={{ marginBottom: "1rem" }}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={locked[i]}
-                        onChange={() => toggleLock(i)}
-                      />{" "}
-                      <strong>Phase {i + 1}:</strong> {phase}
-                    </label>
-                    <br />
-                    <select
-                      value={difficulties[i]}
-                      onChange={(e) => changeDifficulty(i, e.target.value)}
-                    >
-                      <option value="easy">Easy</option>
-                      <option value="medium">Medium</option>
-                      <option value="hard">Hard</option>
-                    </select>
-                    <button
-                      onClick={() => toggleFavorite(phase)}
-                      style={{ marginLeft: "0.5rem" }}
-                    >
-                      {favorites.includes(phase) ? "★ Favorited" : "☆ Favorite"}
-                    </button>
+                  <div key={i} className="phase-card" style={{ "--phase-index": i }}>
+                    <div className="phase-card-content">
+                      <label className="phase-label">
+                        <input
+                          type="checkbox"
+                          checked={locked[i]}
+                          onChange={() => toggleLock(i)}
+                        />
+                        <span className="phase-name"> Phase {i + 1}: {phase}</span>
+                      </label>
+
+                      <select
+                        className="phase-dropdown"
+                        value={difficulties[i]}
+                        onChange={(e) => changeDifficulty(i, e.target.value)}
+                      >
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                      </select>
+
+                      <button
+                        className={`favorite-btn ${favorites.includes(phase) ? "active" : ""}`}
+                        onClick={() => toggleFavorite(phase)}
+                      >
+                        {favorites.includes(phase) ? "★ Favorited" : "☆ Favorite"}
+                      </button>
+                    </div>
                   </div>
                 ))}
-                <button onClick={regenerate}>🎲 Regenerate</button>
+                <button className="regenerate-btn" onClick={regenerate}>
+                  🎲 Regenerate
+                </button>
               </div>
             }
           />
