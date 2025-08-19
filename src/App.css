@@ -122,6 +122,45 @@
 .regenerate-btn:active {
   animation: shake 0.3s;
 }
+/* Master dropdown container */
+.master-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+
+/* Master dropdown label */
+.master-dropdown label {
+  font-weight: bold;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+/* Master dropdown select */
+.master-dropdown select {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 2px solid #007bff;
+  background-color: #f0f2f5;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+/* Hover + focus effect */
+.master-dropdown select:hover,
+.master-dropdown select:focus {
+  background-color: #e7f0ff;
+  border-color: #0056b3;
+  outline: none;
+}
+
 
 /* Animations */
 @keyframes fadeInUp {
