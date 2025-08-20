@@ -124,7 +124,7 @@ return (
                       />
                       <span className="phase-name"> Phase {i + 1}: {phase}</span>
                     </label>
-
+                     <br/>
                     <select
                       className="phase-dropdown"
                       value={difficulties[i]}
