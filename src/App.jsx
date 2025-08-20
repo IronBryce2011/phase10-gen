@@ -123,8 +123,9 @@ return (
                         onChange={() => toggleLock(i)}
                       />
                       <span className="phase-name"> Phase {i + 1}: {phase}</span>
+                      <br />
                     </label>
-                     <br/>
+                     
                     <select
                       className="phase-dropdown"
                       value={difficulties[i]}
