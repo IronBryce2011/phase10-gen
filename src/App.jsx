@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import PrintablePhases from "./PrintablePhases";
 import generatePhase from "./generatePhase";
 import FavoritesList from "./favoritesList"; // make sure you have this component
 import "./App.css"; // import your CSS file
@@ -30,7 +33,11 @@ const getMasterDifficulty = () => {
   return "mixed"; // different values
 };
 
-  
+  const printRef = useRef();
+const handlePrint = useReactToPrint({
+  content: () => printRef.current,
+});
+
   const regenerate = () => {
     const seen = new Set(phases.filter((_, i) => locked[i]));
 
@@ -149,6 +156,20 @@ return (
               <button className="regenerate-btn" onClick={regenerate}>
                 🎲 Regenerate
               </button>
+              <button className="print-btn" onClick={handlePrint}>
+  🖨️ Print Phases
+</button>
+
+<div style={{ height: 0, overflow: "hidden" }}>
+  <PrintablePhases
+    ref={printRef}
+    phases={phases}
+    locked={locked}
+    difficulties={difficulties}
+  />
+</div>
+
+
             </div>
           }
         />

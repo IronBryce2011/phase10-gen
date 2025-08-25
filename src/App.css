@@ -19,6 +19,9 @@
 .nav-link:hover {
   text-decoration: underline;
 }
+.printable-container {
+  display: block !important;
+}
 
 /* Title */
 .app-title {
