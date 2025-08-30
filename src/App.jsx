@@ -74,6 +74,11 @@ function App() {
     });
   };
 
+  // Print the whole page with vanilla JS
+  const handlePrintPage = () => {
+    window.print();
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -89,6 +94,7 @@ function App() {
             path="/"
             element={
               <div className="phases-list">
+
                 {/* Master dropdown */}
                 <div className="master-dropdown">
                   <label>Set all difficulties: </label>
@@ -147,6 +153,9 @@ function App() {
 
                 <button className="regenerate-btn" onClick={regenerate}>
                   🎲 Regenerate
+                </button>
+                <button className="print-btn" onClick={handlePrintPage}>
+                  🖨️ Print Page
                 </button>
               </div>
             }
