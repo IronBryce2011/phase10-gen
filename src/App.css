@@ -163,7 +163,11 @@
   border-color: #0056b3;
   outline: none;
 }
-
+@media print {
+  button, .master-dropdown, .phase-dropdown {
+  display: none;
+  }
+}
 
 /* Animations */
 @keyframes fadeInUp {
